@@ -40,27 +40,74 @@ async function connectDB() {
 
 // 1. Create User (Save to DB on Register)
 app.post("/users", async (req, res) => {
-  const user = req.body;
-  const query = { email: user.email };
-  const existingUser = await usersCollection.findOne(query);
+  try {
+    const user = req.body;
 
-  if (existingUser) {
-    return res.send({ message: "User already exists", insertedId: null });
+    // Validate required fields
+    if (!user.email || !user.uid) {
+      return res.status(400).send({
+        message: "Email and UID are required",
+        insertedId: null,
+      });
+    }
+
+    const query = { email: user.email };
+    const existingUser = await usersCollection.findOne(query);
+
+    if (existingUser) {
+      return res.send({
+        message: "User already exists",
+        insertedId: existingUser._id,
+        user: existingUser,
+      });
+    }
+
+    const result = await usersCollection.insertOne({
+      name: user.name || user.email?.split("@")[0] || "User",
+      email: user.email,
+      uid: user.uid,
+      image: user.image || "",
+      role: "user", // Default role
+      createdAt: new Date(),
+    });
+
+    res.send({
+      message: "User created successfully",
+      insertedId: result.insertedId,
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).send({
+      message: "Failed to create user",
+      error: error.message,
+    });
   }
-
-  const result = await usersCollection.insertOne({
-    ...user,
-    role: "user", // Default role
-    createdAt: new Date(),
-  });
-  res.send(result);
 });
 
 // 2. Get User Role
 app.get("/users/role/:email", async (req, res) => {
-  const email = req.params.email;
-  const user = await usersCollection.findOne({ email });
-  res.send({ role: user?.role || "user" });
+  try {
+    const email = req.params.email;
+
+    if (!email) {
+      return res.status(400).send({ error: "Email parameter is required" });
+    }
+
+    const user = await usersCollection.findOne({ email });
+    res.send({
+      role: user?.role || "user",
+      exists: !!user,
+      user: user
+        ? { name: user.name, email: user.email, image: user.image }
+        : null,
+    });
+  } catch (error) {
+    console.error("Error fetching user role:", error);
+    res.status(500).send({
+      error: "Failed to fetch user role",
+      role: "user", // Default fallback
+    });
+  }
 });
 
 // 3. Get All Users (Admin Only Feature)
