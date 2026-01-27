@@ -9,25 +9,34 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-7.0-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-[**Live API**](https://your-server-link.vercel.app) | [**Frontend Repo**](https://github.com/habib-web-dev1/trendmart-client)
+[**🌐 Live Demo**](https://trendmart-client.vercel.app) | [**Frontend Repo**](https://github.com/habib-web-dev1/trendmart-client)
 
 </div>
 
 ---
 
-## 🌟 Overview
+## 🌟 Project Overview
 
-This is the RESTful API server for **TrendMart**. It is built with **Express.js 5.1** and serves as the primary data bridge between **MongoDB Atlas** and the Next.js frontend. The server manages complex operations including product inventory CRUD, role-based user management, and secure data persistence.
+The **TrendMart API** is a fully-featured RESTful backend built with **Express.js 5.1**.  
+It provides a secure, scalable data layer for the Next.js frontend, managing **product inventory**, **user roles**, and **persistent shopping data**.  
+
+Key highlights:
+
+- Role-based access control for admin and standard users
+- CRUD operations for products and user management
+- Optimized for performance and secure API requests
 
 ---
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Runtime:** Node.js (v18+)
-- **Framework:** Express.js (v5.1.0)
-- **Database:** MongoDB (NoSQL)
-- **Middleware:** CORS, Dotenv, Error-Handling
-- **Environment:** Securely managed via `.env` variables
+| Layer           | Technology / Tool                 |
+|-----------------|----------------------------------|
+| **Runtime**     | Node.js v18+                      |
+| **Framework**   | Express.js v5.1                   |
+| **Database**    | MongoDB (Atlas)                   |
+| **Middleware**  | CORS, Dotenv, Error Handling      |
+| **Deployment**  | Vercel / any Node-compatible host |
 
 ---
 
@@ -35,51 +44,33 @@ This is the RESTful API server for **TrendMart**. It is built with **Express.js 
 
 ### 📦 Product Management
 
-| Method   | Endpoint        | Description                     |
-| :------- | :-------------- | :------------------------------ |
-| `GET`    | `/products`     | Retrieve all products (Public)  |
-| `GET`    | `/products/:id` | Retrieve single product details |
-| `POST`   | `/products`     | Create new product (Admin Only) |
-| `DELETE` | `/products/:id` | Remove product from inventory   |
+| Method   | Endpoint        | Description                       |
+| :------- | :-------------- | :-------------------------------- |
+| `GET`    | `/products`     | Retrieve all products (Public)     |
+| `GET`    | `/products/:id` | Retrieve single product details    |
+| `POST`   | `/products`     | Add a new product (Admin Only)     |
+| `PUT`    | `/products/:id` | Update product details (Admin Only)|
+| `DELETE` | `/products/:id` | Remove product from inventory      |
 
 ### 👥 User & Role Management
 
 | Method  | Endpoint             | Description                       |
 | :------ | :------------------- | :-------------------------------- |
-| `POST`  | `/users`             | Create/Sync user with database    |
-| `GET`   | `/users`             | Retrieve user list (Admin Only)   |
-| `GET`   | `/users/role/:email` | Verify user permissions           |
-| `PATCH` | `/users/role/:id`    | Update user status (User ↔ Admin) |
+| `POST`  | `/users`             | Add or sync a user with the database |
+| `GET`   | `/users`             | Retrieve all users (Admin Only)     |
+| `GET`   | `/users/role/:email` | Check user role (Admin verification)|
+| `PATCH` | `/users/role/:id`    | Promote/Demote user (User ↔ Admin) |
 
 ---
 
-## 📊 Data Models
 
-### Products Collection
+## ⚙️ Core Features & Developer Notes
 
-The product schema is optimized for search and filtering, featuring fields for price indexing and category sorting.
-
-### Users Collection
-
-Stores synchronized data from Firebase, mapping **UIDs** to roles to facilitate secure route protection on the frontend.
-
----
-
-## 🚀 Setup & Local Development
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/habib-web-dev1/trendmart-server.git](https://github.com/habib-web-dev1/trendmart-server.git)
-   cd trendmart-server
-   ```
-
----
-
-## ⚙️ Core Logic & Configuration
-
-- **🔌 Database Connectivity**: Implemented a robust MongoDB connection logic using a singleton-style pattern to ensure stable, persistent connectivity on server startup and prevent multiple connection overhead.
-- **🛡️ Graceful Error Handling**: Features a centralized global error-handling middleware. This ensures that every API request—whether successful or failed—returns a consistent JSON response with appropriate **HTTP Status Codes** and developer-friendly error messages.
-- **🌐 CORS Management**: Securely configured **Cross-Origin Resource Sharing (CORS)** to whitelist specific frontend domains, ensuring that data is only accessible by the authorized TrendMart client application.
+- **Database Connectivity:** Singleton-style MongoDB connection for stable, efficient access.
+- **Error Handling:** Centralized middleware ensures consistent JSON responses and HTTP status codes.
+- **CORS Management:** Restricts API access to authorized frontend domains.
+- **Security:** Role-based route protection for admin-only endpoints.
+- **Scalability:** Modular architecture allows easy expansion and microservice integration.
 
 ---
 
@@ -87,14 +78,39 @@ Stores synchronized data from Firebase, mapping **UIDs** to roles to facilitate 
 
 <div align="center">
 
-**I am always open to discussing new projects, creative ideas, or opportunities to be part of your vision.**
+**Open to collaborations, feedback, and new opportunities.**
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahsan-habib-coder/)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/habib-web-dev1)
 [![Email](https://img.shields.io/badge/Email-habibmdahsan08%40gmail.com-EE4B2B?style=for-the-badge&logo=gmail&logoColor=white)](mailto:habibmdahsan08@gmail.com)
 
-<br/>
-
 **Md Ahsan Habib** _MERN Stack Developer_
 
 </div>
+
+
+---
+
+## 📊 Data Models
+
+### Products Collection
+
+- Optimized for **search** and **filtering**
+- Fields include: `name`, `description`, `price`, `category`, `imageURL`, `stock`
+
+### Users Collection
+
+- Maps **Firebase UIDs** to roles
+- Supports **role-based route protection** and admin verification
+
+---
+
+## 🚀 Setup & Local Development
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/habib-web-dev1/trendmart-server.git
+cd trendmart-server
+
+
